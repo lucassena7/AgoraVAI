@@ -1,13 +1,10 @@
 /* 							Atividade 5
 Desenvolver uma função que, dado um arquivo com números inteiros, um por linha, crie uma lista encadeada L 
-com aseguinte característica:
-
+com a seguinte característica:
 Cada nó de L terá os seguintes campos: valor (cada número distinto existente no arquivo), quantidade
 (quantas vezes o número armazenado no campo valor encontra-se no arquivo), prox (endereço do próximo
 nó da lista).
-
 Para exemplificar, considerem o seguinte arquivo:
-
 5
 1
 4
@@ -21,17 +18,11 @@ Para exemplificar, considerem o seguinte arquivo:
 3
 4
 1
-
 Como o arquivo possui 5 elementos distintos, a lista L, neste exemplo, terá 5 nós (não necessariamente nesta ordem):
-
 1. Nó com 5 no campo valor e 3 no campo quantidade (uma vez que o valor 5 aparece 3 vezes no arquivo);
-
 2. Nó com 1 no campo valor e 3 no campo quantidade (uma vez que o valor 1 aparece 3 vezes no arquivo);
-
 3. Nó com 4 no campo valor e 3 no campo quantidade (uma vez que o valor 4 aparece 3 vezes no arquivo);
-
 4. Nó com 2 no campo valor e 2 no campo quantidade (uma vez que o valor 2 aparece 2 vezes no arquivo);
-
 5. Nó com 3 no campo valor e 2 no campo quantidade (uma vez que o valor 3 aparece 2 vezes no arquivo);
 */ 
 
@@ -54,15 +45,77 @@ typedef struct No{
 typedef TNo* TLista; //TLista é um ponteiro para TNo
 
 //Protótipo das funções
+int lerArquivo (char nomeArq[]);
 int preencherLista (char nomeArq[], TLista * L);
+void exibir (TLista L);
 
 //Main
 void main  ()
 {
+	//Declaração de variáveis
+	char nomeArq[20];
+	TLista L = NULL;
 	
+	//lendo o nome do arquivo
+	printf ("Entre com o nome do arquivo a ser lido: ");
+	fflush (stdin);
+	gets (nomeArq);
+	
+	//chamando a função
+	if (lerArquivo (nomeArq) == FALSE) 
+	{
+		printf ("\nErro na abertura do arquivo!");
+	}
+	else
+	{
+		printf ("\nArquivo aberto com sucesso!");
+		printf ("\n\n");
+	}
+	
+	//chamando a função
+	switch (preencherLista (nomeArq, &L))
+	{
+		case -1: printf ("\nErro na abertura do arquivo!");
+				 break;
+		
+		case 0: printf ("\nErro na alocacao de memoria!.");
+		         break;
+		
+		case 1:	exibir (L);
+	}
 }
 
 //Implementação das demais funções
+int lerArquivo (char nomeArq[])
+{
+	//declaração de variáveis
+	FILE *arquivo;			//1. declarar uma variável do tipo FILE*
+	int numero;
+		
+	//2.abrir o arquivo (associa a variável FILE à string que representa o arquivo / define o tipo de acesso)
+	arquivo = fopen (nomeArq, "r");  //w - write    r - read    a - append
+	
+	//testando se houve falha na abertura
+	if (arquivo == NULL)
+	{
+		return FALSE;
+	}
+	else
+	{
+		//lendo os elementos do arquivo
+		while (fscanf (arquivo, "%d", &numero) != EOF)    //EOF - End Of File
+		{
+			//exibindo na tela os valores lidos do arquivo
+			printf ("%d\n", numero);
+		}
+		
+		//4. fechar o arquivo
+		fclose (arquivo);
+		
+		return TRUE;
+	}
+}
+
 int preencherLista (char nomeArq[], TLista * L)
 {
 	//declaração de variáveis
@@ -78,7 +131,7 @@ int preencherLista (char nomeArq[], TLista * L)
 	{
 		fclose (arq);
 		
-		return -1;
+		return -1; //retornando -1 caso tenha dado erro.
 	}
 	else
 	{
@@ -95,7 +148,7 @@ int preencherLista (char nomeArq[], TLista * L)
 				//Verificando se a memória foi alocada
 				if (aux == NULL)
 				{
-					return FALSE;
+					return 0;
 				}
 				else
 				{
@@ -112,10 +165,10 @@ int preencherLista (char nomeArq[], TLista * L)
 			else
 			//Como Ler o próximo caracter ??
 			{
-				
+				fscanf (arq, "%d", &valor); //Tentativa de ler o proximo caracter
 			}
-			
 		}
+		return 1;
 	}
 }
 
@@ -143,3 +196,28 @@ int buscar (TLista L, int numero)
 	return FALSE; //Se chegou aqui é pq o valor não foi encontrado na lista.
 }
 
+void exibir (TLista L)
+{
+	//Declaração de variáveis
+	TLista aux = L; //Fazendo 'aux' que é um ponteiro para TNo apontar para o primeiro nó da lista
+	
+	if (L == NULL) //Testando se a a lista está vazia
+	{
+		printf ("Lista Vazia !.");
+	}
+	
+	else
+	{
+		printf ("Lista: ");
+		
+		while (aux != NULL) //Enquanto aux for diferente de NULL
+		{
+			//Printando o valor da lista
+			printf ("%d", aux->valor); //printa o que é apontado por aux
+									//pode ser ("%d", (*aux).valor));
+		
+			//Atualizando o valor de aux
+			aux = aux->prox; 
+		}	
+	}
+}

@@ -9,7 +9,7 @@ deve ser utilizada, assim como os elementos originais do vetor devem ser preserv
 #include <stdlib.h>
 
 //definição de constantes
-#define TAM 6
+#define TAM 7
 #define TRUE 1
 #define FALSE 0
 
@@ -23,22 +23,31 @@ typedef struct No{
 typedef TNo* TLista; //TLista é um ponteiro para TNo
 
 //protótipos/cabeçalhos das funções
-void exibir (int vetor[], int tamanho);
+void exibirVetor (int vetor[], int tamanho);
 int preencherLista (int vetor[], int tamanho, TLista * L);
+void exibirLista (TLista L); //Não precisamos colocar o ponteiro pois só iremos percorrer a lista
 
 //main
 void main ()
 {
 	//declaração de variáveis
-	int v[TAM] = {5, 4, 4, 3, 2, 1, 1};
+	int v[TAM] = {5, 4, 8, 3, 2, 1, 1};
+	TLista L = NULL;
 	
-	exibir (v, TAM);
+	exibirVetor (v, TAM);
 	
-	
+	if (preencherLista (v, TAM, &L) == FALSE)
+	{
+		printf("Houve erro na alocacao de memoria !");
+	}
+	else
+	{
+		exibirLista(L);
+	}
 }
 
 //Implementação das demais funções
-void exibir (int vetor[], int tamanho)
+void exibirVetor (int vetor[], int tamanho)
 {
 	//declaração de variáveis
 	int i;
@@ -62,11 +71,17 @@ int preencherLista (int vetor[], int tamanho, TLista * L)
 	TLista aux;
 	
 	//variando todas as posições do vetor
-	for (i=0;i<tamanho;i++)
+	//Enquanto i<tamanho
+	//while (i)
+	for (i=0;i<tamanho;)
 	{
-		//verificando se o elemento não existe na lista
-		if (buscar (*L, vetor[i]) == FALSE)
-		{	
+		//verificando se o elemento existe na lista
+		if (buscar (*L, vetor[i]) == TRUE)
+		{
+			i++;
+		}
+		else //Se o elemento nao existir na lista
+		{
 			//1º passo: alocar memória para o novo nó	
 			aux = (TLista) malloc (sizeof(TNo));
 		
@@ -86,15 +101,12 @@ int preencherLista (int vetor[], int tamanho, TLista * L)
 			
 				//4º passo: fazer com que L aponte para o novo nó da lista		
 				*L = aux;
+				
+				i++;
 			}
 		}
-		else
-		{
-			i++;
-		}
-		return TRUE;
 	}
-	
+	return TRUE;
 }
 
 int buscar (TLista L, int numero)
@@ -117,4 +129,30 @@ int buscar (TLista L, int numero)
 	
 	//se chegou a este ponto, o número buscado não existe
 	return FALSE;	
+}
+
+void exibirLista (TLista L)
+{
+	//Declaração de variáveis
+	TLista aux = L; //Fazendo 'aux' que é um ponteiro para TNo apontar para o primeiro nó da lista
+	
+	if (L == NULL) //Testando se a a lista está vazia
+	{
+		printf ("Lista Vazia !.");
+	}
+	
+	else
+	{
+		printf ("Lista: ");
+		
+		while (aux != NULL) //Enquanto aux for diferente de NULL
+		{
+			//Printando o valor da lista
+			printf ("%d", aux->valor); //printa o que é apontado por aux
+									//pode ser ("%d", (*aux).valor));
+		
+			//Atualizando o valor de aux
+			aux = aux->prox; 
+		}	
+	}
 }
