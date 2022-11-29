@@ -1,22 +1,22 @@
 /*
 	FAETERJ-Rio
-	Fundamentos de ProgramaÁ„o - FPR
-	2022/2  -  Turma: Manh„
+	Fundamentos de Programa√ß√£o - FPR
+	2022/2  -  Turma: Manh√£
 	
 	Data: 17/11/2022
 	
-	Pilhas (atravÈs de listas encadeadas)
+	Pilhas (atrav√©s de listas encadeadas)
 */
 
-//importaÁ„o de bibliotecas
+//importa√ß√£o de bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
 
-//definiÁ„o de constantes
+//defini√ß√£o de constantes
 #define TRUE 1
 #define FALSE 0
 
-//definiÁ„o de tipos
+//defini√ß√£o de tipos
 typedef struct No {
 	int valor;
 	struct No* prox;
@@ -24,7 +24,7 @@ typedef struct No {
 
 typedef TNo* TLista;
 
-//declaraÁ„o dos protÛtipos das funÁıes
+//declara√ß√£o dos prot√≥tipos das fun√ß√µes
 int empilhar (TLista *P, int numero);
 int desempilhar (TLista *P, int *numero);
 int topo (TLista P, int *t);
@@ -34,7 +34,7 @@ int menu ();
 //main 
 void main ()
 {
-	//declaraÁ„o de vari·veis
+	//declara√ß√£o de vari√°veis
 	TLista P = NULL;
 	int num, op;
 	
@@ -42,17 +42,17 @@ void main ()
 	{
 		system ("CLS");		//limpar tela    clrscr();
 		
-		//exibindo o meu ao usu·rio
+		//exibindo o meu ao usu√°rio
 		op = menu ();
 		
-		//verificando a opÁ„o escolhida
+		//verificando a op√ß√£o escolhida
 		switch (op)
 		{
 			//Empilhar
 			case 1: printf ("\nEntre com o valor a ser empilhado: ");
 			        scanf ("%d", &num);
 			        
-			        //chamando a funÁ„o
+			        //chamando a fun√ß√£o
 			        if (empilhar (&P, num) == TRUE)
 			        {
 			        	printf ("\n\tElemento empilhado com sucesso!");
@@ -64,7 +64,7 @@ void main ()
 					break;
 
 			//Desempilhar
-			case 2: //chamando a funÁ„o
+			case 2: //chamando a fun√ß√£o
 			        if (desempilhar (&P, &num) == TRUE)
 			        {
 			        	printf ("\n\tO valor %d foi desempilhado!", num);
@@ -85,7 +85,7 @@ void main ()
 						printf ("\n\tERRO: pilha vazia!");
 					}
 			
-			//SaÌda
+			//Sa√≠da
 			case 4: printf ("\n\nPrograma finalizado!");
 			        break;
 			        
@@ -97,30 +97,30 @@ void main ()
 	while (op != 4);
 }
 
-//implementaÁ„o das funÁıes
+//implementa√ß√£o das fun√ß√µes
 int empilhar (TLista *P, int numero)
 {
-	//declaraÁ„o de vari·veis;
+	//declara√ß√£o de vari√°veis;
 	TLista aux;
 	
-	//1∫ passo: alocar memÛria para o novo nÛ	
+	//1¬∫ passo: alocar mem√≥ria para o novo n√≥	
 	aux = (TLista) malloc (sizeof(TNo));
 	
-	//verificando se houve erro na alocaÁ„o de memÛria
+	//verificando se houve erro na aloca√ß√£o de mem√≥ria
 	if (aux == NULL)
 	{
 		return FALSE;
 	}
 	else
 	{
-		//2∫ passo: armazenar 'numero' na memÛria recÈm-alocada
+		//2¬∫ passo: armazenar 'numero' na mem√≥ria rec√©m-alocada
 		aux->valor = numero;
 		
-		//3∫ passo: mandar o campo 'prox' do novo nÛ apontar para o 
-		//"atÈ ent„o" topo da pilha
+		//3¬∫ passo: mandar o campo 'prox' do novo n√≥ apontar para o 
+		//"at√© ent√£o" topo da pilha
 		aux->prox = *P;
 		
-		//4∫ passo: fazer com que P aponte para o novo nÛ
+		//4¬∫ passo: fazer com que P aponte para o novo n√≥
 		*P = aux;
 		
 		return TRUE;
@@ -129,10 +129,10 @@ int empilhar (TLista *P, int numero)
 
 int desempilhar (TLista *P, int *numero)
 {
-	//declaraÁ„o de vari·veis
+	//declara√ß√£o de vari√°veis
 	TLista aux;
 	
-	//verificando se a pilha est· vazia
+	//verificando se a pilha est√° vazia
 	if (!(*P))
 	{
 		return FALSE;
@@ -142,13 +142,13 @@ int desempilhar (TLista *P, int *numero)
 		//fazer o 'aux' apontar para o topo da pilha
 		aux = *P;
 		
-		//atualizando o P, uma vez que o topo ser· removido	
+		//atualizando o P, uma vez que o topo ser√° removido	
 		*P = aux->prox;   //ou   *P = (*P)->prox
 		
 		//armazenando em 'numero' o valor sendo removido
 		*numero = aux->valor;
 		
-		//liberando o nÛ sendo removido
+		//liberando o n√≥ sendo removido
 		free (aux);
 		
 		return TRUE;
@@ -157,7 +157,7 @@ int desempilhar (TLista *P, int *numero)
 
 int topo (TLista P, int *t)
 {
-	//verificando se a pilha est· vazia
+	//verificando se a pilha est√° vazia
 	//if (P == NULL)
 	if (!P)
 	{
@@ -174,20 +174,20 @@ int topo (TLista P, int *t)
 
 int menu ()
 {
-	//declaraÁ„o de vari·veis
+	//declara√ß√£o de vari√°veis
 	int opcao;
 	
-	//exibindo o meu ao usu·rio
+	//exibindo o meu ao usu√°rio
 	printf ("Menu de Operacoes:\n\n");
 	printf ("(1) Empilhar\n");
 	printf ("(2) Desempilhar\n");
 	printf ("(3) Topo\n");
 	printf ("(4) Sair\n\n");
 	
-	//lendo a opÁ„o do usu·rio
+	//lendo a op√ß√£o do usu√°rio
 	printf ("Entre com a sua opcao: ");
 	scanf ("%d", &opcao);
 	
-	//retornando a opÁ„o escolhida
+	//retornando a op√ß√£o escolhida
 	return opcao;
 }
