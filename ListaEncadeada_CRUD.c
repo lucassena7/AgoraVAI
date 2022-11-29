@@ -3,143 +3,315 @@
 			C	R	U	D
 */
 
-//Importação de bibliotecas
+//importação de bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
 
-//Definição de constantes
+//definição de constantes
 #define TRUE 1
 #define FALSE 0
 
-//Declaração de tipos
-//Criamos um nome provisório 'No' para o struct 'TNo', para que possamos manipular o struct.
-typedef struct No{
-	int valor; //Vale lembrar que é 'int' porque se trata de uma lista de inteiros. Pode ser float, string, struct...
-	struct No* prox; //? um ponteiro para um struct, neste caso para um igual ao criado.
-}TNo;
+//definição de tipos
+typedef struct No {
+	int valor;
+	struct No* prox;
+} TNo;
 
-typedef TNo* TLista; //TLista é um ponteiro para TNo
+typedef TNo* TLista;
 
-// OBS: TLista* L1, L2; -- L1 e L2 são ponteiros para TLista
-// OBS: TLista *L1, L2; -- L1 é um ponteiro para TLista e L2 é do tipo TLista.
+//declaração dos protótipos das funções
+int inserir (TLista *L, int numero);
+int remover (TLista *L, int numero);
+int alterar (TLista L, int velho, int novo);
+int buscar (TLista L, int numero);
+void exibir (TLista L);
 
-//Protótipo das funções
-int inserir (TLista * L, int numero); //Toda vez que eu mudar o valor de um parâmetro, devo passá-lo por referência e nao por valor.
-								      //Para facilitar, criamos a variável 'TLista'. Poderia ser também (TNo** L, int numero);
-int removerTodasOcorrencias (TLista* L, int numero);
-int alterarTodasOcorrencias (TLista L, int numAntigo, int numNovo); //Não precisamos colocar o ponteiro '*' pois o endereço não é alterado, e sim o conteúdo.
-int buscar (TLista L, int numero); //Não precisamos colocar o ponteiro '*' pois só iremos percorrer a lista. Não iremos alterá-la.
-void exibir (TLista L); //Não precisamos colocar o ponteiro pois só iremos percorrer a lista
+int menu ();
 
-//Main
-void main  ()
+//main 
+void main ()
 {
-	//Declaração de variáveis
-	TNo * lista = NULL; //lista é um ponteiro para o struct. Ela armazena o endereço do primeiro nó. 
+	//declaração de variáveis
+	TLista L = NULL;
+	int num1, num2, op, quant, resp;
+	
+	do
+	{
+		system ("CLS");		//limpar tela    clrscr();
+		
+		//exibindo o meu ao usuário
+		op = menu ();
+		
+		//verificando a opção escolhida
+		switch (op)
+		{
+			//Inserção
+			case 1: printf ("\nEntre com o valor a ser inserido: ");
+			        scanf ("%d", &num1);
+			        
+			        //chamando a função
+			        if (inserir (&L, num1) == TRUE)
+			        {
+			        	printf ("\n\tInsercao realizada com sucesso!");
+					}
+					else
+					{
+						printf ("\n\tERRO: insercao nao realizada!");
+					}
+					break;
+
+			//Remoção
+			case 2: printf ("\nEntre com o valor a ser removido: ");
+			        scanf ("%d", &num1);
+			        
+			        //chamando a função
+			        quant = remover (&L, num1);
+			        
+					if (quant > 0)
+			        {
+			        	printf ("\n\t%d remocoes realizadas!", quant);
+					}
+					else
+					{
+						printf ("\n\tERRO: remocao nao realizada!");
+					}
+					break;
+
+			//Alteração
+			case 3: printf ("\nEntre com o valor a ser alterado: ");
+			        scanf ("%d", &num1);
+			        
+			        printf ("\nEntre com o novo valor: ");
+			        scanf ("%d", &num2);
+			        
+			        //chamando a função
+			        quant = alterar (L, num1, num2);
+			        
+			        if (quant > 0)
+			        {
+			        	printf ("\n\t%d alteracoes realizadas!", quant);
+					}
+					else
+					{
+						printf ("\n\tERRO: alteracao nao realizada!");
+					}
+					break;
+
+			//Busca
+			case 4: printf ("\nEntre com o valor a ser buscado: ");
+			        scanf ("%d", &num1);
+			        
+			        //chamando a função
+			        resp = buscar (L, num1);
+			        
+					if (resp == TRUE)
+			        {
+			        	printf ("\n\tO valor %d foi encontrado na lista!", num1);
+					}
+					else
+					{
+						printf ("\n\tO valor %d NAO foi encontrado na lista!", num1);
+					}
+					break;
+
+			//Exibir
+			case 5: exibir (L);
+					break;
+					
+			//Saída
+			case 6: printf ("\n\nPrograma finalizado!");
+			        break;
+			        
+			default: printf ("\n\nOpcao invalida! Tente novamente.");
+		}
+		
+		system ("PAUSE");
+	}
+	while (op != 6);
 }
 
-int inserir (TLista * L, int numero)
+//implementação das funções
+int inserir (TLista *L, int numero)
 {
-	//Declaração de variáveis
+	//declaração de variáveis;
 	TLista aux;
 	
-	//Passo 1: alocar memória
-	aux = (TLista) malloc (sizeof(TNo)); //malloc: argumento -> quantos bytes vc quer ? (retorna *void)
-																				//void = indeterminado
-										
-										//Tivemos q fazer um casting (TLista). Convertemos *void para TLista
+	//1º passo: alocar memória para o novo nó	
+	aux = (TLista) malloc (sizeof(TNo));
 	
-	//Verificando se a memória foi alocada
+	//verificando se houve erro na alocação de memória
 	if (aux == NULL)
 	{
 		return FALSE;
 	}
 	else
 	{
-		//Passo 2: armazenando 'numero' na posição alocada
+		//2º passo: armazenar 'numero' na memória recém-alocada
 		aux->valor = numero;
 		
-		//Passo 3: fazendo o novo nó aontar para aquele que até então era o primeiro nó da lista
+		//3º passo: mandar o campo 'prox' do novo nó apontar para o 
+		//"até então" primeiro elemento	da lista
 		aux->prox = *L;
 		
-		//Passo 4: fazer com que a lista aponte para o novo elemento (uma vez que está sendo inserido no inicio da lista
+		//4º passo: fazer com que L aponte para o novo nó da lista		
 		*L = aux;
 		
 		return TRUE;
-	} 
-}
-
-int removerTodasOcorrencias (TLista* L, int numero)
-{
-	//Declaração de variáveis
-	
-	
-}
-
-int alterarTodasOcorrencias (TLista L, int numAntigo, int numNovo)
-{
-	//Declaração de variáveis
-	TLista aux = L; //Fazendo 'aux' que é um ponteiro para TNo apontar para o primeiro nó da lista
-	int cont = 0;
-	//int alterou = FALSE;
-	
-	while (aux != NULL) //Enquanto aux for diferente de NULL
-	{
-		if ( aux->valor == numAntigo) //Verificando se o número buscado é igual ao elemento apontado por aux
-		{
-			aux->valor = numNovo; //alterando o valor apontado por aux
-			cont++; //Um contador foi criado a fim de saber quantas alterações foram feitas
-			//alterou = TRUE;
-		}
-			
-		//Atualizando o valor de aux
-		aux = aux->prox; 
 	}
+	
+}
+
+int remover (TLista *L, int numero)
+{
+	//declaração de variáveis
+	TLista aux1, aux2;
+	int cont = 0;
+	
+	//verificando se o primeiro elemento da lista é o número que deseja-se remover
+	while ((*L) && ((*L)->valor == numero))
+	{
+		//fazendo o aux1 apontar para o primeiro elemento da lista
+		aux1 = *L;
+		
+		//fazer o L apontar para o "segundo" elemento da lçista
+		*L = aux1->prox;     //*L = (*L)->prox;
+		
+		//liberando a memória do nó apontado por 'aux1'
+		free (aux1);
+		
+		//atualizando o número de remoções realizadas
+		cont++;
+	}
+	
+	//verificando se ainda há elementos na lista
+	if (*L)
+	{
+		//colocando os auxiliares 'aux2' e 'aux1' no primeiro e segundo nós, respectivamente
+		aux2 = *L;
+		aux1 = (*L)->prox;	
+		
+		//percorrendo a lista com 'aux1'
+		while (aux1)
+		{
+			//verificando se o 'aux1' está apontando para 'numero'
+			if (aux1->valor == numero)
+			{
+				//removendo o valor apontado por 'aux1'
+				aux2->prox = aux1->prox;
+				
+				//removendo o nó que guarda o 'numero'
+				free (aux1);
+				cont++;
+				
+				//fazendo 'aux1' apontar para o próximo elemento da lista
+				aux1 = aux2->prox;				
+			}
+			else
+			{
+				//andando com os dois auxiliares
+				aux2 = aux1;
+				aux1 = aux1->prox;
+			}
+		}
+	}
+	
+	//retornando a quantidade de remoções realizadas
 	return cont;
-	//return alterou;
+}
+
+int alterar (TLista L, int velho, int novo)
+{
+	//declaração de variáveis
+	TLista aux = L;
+	int cont = 0;
+	
+	//percorrendo toda a lista
+	while (aux != NULL)
+	{
+		//verificando se o elemento 'velho' foi encontrado
+		if (aux->valor == velho)
+		{
+			//alterando o 'velho' pelo 'novo'
+			aux->valor = novo;
+			
+			//atualizando o número de atualizações realizadas
+			cont++;
+		}
+		
+		//fazendo o aux apontar para o próximo nó da lista
+		aux = aux->prox;		
+	}
+	
+	//retornando a quantidade de alterações realizadas
+	return cont;
 }
 
 int buscar (TLista L, int numero)
 {
-	//Declaração de variáveis
-	TLista aux = L; //Fazendo 'aux' que é um ponteiro para TNo apontar para o primeiro nó da lista
+	//declaração de variáveis
+	TLista aux = L;
 	
-	while (aux != NULL) //Enquanto aux for diferente de NULL
+	//percorrendo a lista até o seu final
+	while (aux != NULL)
+	{
+		//testando se é o valor sendo buscado
+		if (aux->valor == numero)
 		{
-			if ( aux->valor == numero) //Verificando se o número buscado é igual ao elemento apontado por aux
-			{
-				return TRUE; //Retornando TRUE caso o valor esteja na lista.
-			}
-			
-			//Atualizando o valor de aux
-			aux = aux->prox; 
+			return TRUE;
 		}
-		
-	return FALSE; //Se chegou aqui é pq o valor não foi encontrado na lista.
+			
+		//atualizando o 'aux' para apontar para o próximo nó
+		aux = aux->prox;
+	}
+	
+	//se chegou a este ponto, o número buscado não existe
+	return FALSE;	
 }
 
 void exibir (TLista L)
 {
-	//Declaração de variáveis
-	TLista aux = L; //Fazendo 'aux' que é um ponteiro para TNo apontar para o primeiro nó da lista
+	//declaração de variáveis
+	TLista aux = L;
 	
-	if (L == NULL) //Testando se a a lista está vazia
+	//testando se a lista está vazia
+	if (L == NULL)
 	{
-		printf ("Lista Vazia !.");
+		printf ("\nLista vazia!");
 	}
-	
 	else
 	{
-		printf ("Lista: ");
+		printf ("\nElementos da lista: ");
 		
-		while (aux != NULL) //Enquanto aux for diferente de NULL
+		//percorrendo a lista até o seu final
+		while (aux != NULL)
 		{
-			//Printando o valor da lista
-			printf ("%d", aux->valor); //printa o que é apontado por aux
-									//pode ser ("%d", (*aux).valor));
-		
-			//Atualizando o valor de aux
-			aux = aux->prox; 
-		}	
+			//exibindo o valor apontado pelo 'aux'
+			printf ("%d ", aux->valor);
+			
+			//atualizando o 'aux' para apontar para o próximo nó
+			aux = aux->prox;
+		}
 	}
+}
+
+int menu ()
+{
+	//declaração de variáveis
+	int opcao;
+	
+	//exibindo o meu ao usuário
+	printf ("Menu de Operacoes:\n\n");
+	printf ("(1) Inserir\n");
+	printf ("(2) Remover\n");
+	printf ("(3) Alterar\n");
+	printf ("(4) Buscar\n");
+	printf ("(5) Exibir\n");
+	printf ("(6) Sair\n\n");
+	
+	//lendo a opção do usuário
+	printf ("Entre com a sua opcao: ");
+	scanf ("%d", &opcao);
+	
+	//retornando a opção escolhida
+	return opcao;
 }
