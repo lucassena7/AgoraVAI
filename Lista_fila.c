@@ -1,22 +1,22 @@
 /*
 	FAETERJ-Rio
-	Fundamentos de ProgramaÁ„o - FPR
-	2022/2  -  Turma: Manh„
+	Fundamentos de Programa√ß√£o - FPR
+	2022/2  -  Turma: Manh√£
 	
 	Data: 23/11/2022
 	
-	Filas (atravÈs de listas encadeadas)
+	Filas (atrav√©s de listas encadeadas)
 */
 
-//importaÁ„o de bibliotecas
+//importa√ß√£o de bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
 
-//definiÁ„o de constantes
+//defini√ß√£o de constantes
 #define TRUE 1
 #define FALSE 0
 
-//definiÁ„o de tipos
+//defini√ß√£o de tipos
 typedef struct No {
 	int valor;
 	struct No* prox;
@@ -24,7 +24,7 @@ typedef struct No {
 
 typedef TNo* TLista;
 
-//declaraÁ„o dos protÛtipos das funÁıes
+//declara√ß√£o dos prot√≥tipos das fun√ß√µes
 int enfilar (TLista *F, TLista *U, int numero);
 int desenfilar (TLista *F, TLista *U, int *numero);
 int primeiro (TLista F, int *p);
@@ -34,7 +34,7 @@ int menu ();
 //main 
 void main ()
 {
-	//declaraÁ„o de vari·veis
+	//declara√ß√£o de vari√°veis
 	TLista F = NULL, U = NULL;
 	int num, op;
 	
@@ -42,17 +42,17 @@ void main ()
 	{
 		system ("CLS");		//limpar tela    clrscr();
 		
-		//exibindo o meu ao usu·rio
+		//exibindo o meu ao usu√°rio
 		op = menu ();
 		
-		//verificando a opÁ„o escolhida
+		//verificando a op√ß√£o escolhida
 		switch (op)
 		{
 			//Enfilar
 			case 1: printf ("\nEntre com o valor a ser enfilado: ");
 			        scanf ("%d", &num);
 			        
-			        //chamando a funÁ„o
+			        //chamando a fun√ß√£o
 			        if (enfilar (&F, &U, num) == TRUE)
 			        {
 			        	printf ("\n\tElemento enfilado com sucesso!");
@@ -64,7 +64,7 @@ void main ()
 					break;
 
 			//Desenfilar
-			case 2: //chamando a funÁ„o
+			case 2: //chamando a fun√ß√£o
 			        if (desenfilar (&F, &U, &num) == TRUE)
 			        {
 			        	printf ("\n\tO valor %d foi desenfilado!", num);
@@ -85,7 +85,7 @@ void main ()
 						printf ("\n\tERRO: fila vazia!");
 					}
 			
-			//SaÌda
+			//Sa√≠da
 			case 4: printf ("\n\nPrograma finalizado!");
 			        break;
 			        
@@ -97,40 +97,40 @@ void main ()
 	while (op != 4);
 }
 
-//implementaÁ„o das funÁıes
+//implementa√ß√£o das fun√ß√µes
 int enfilar (TLista *F, TLista *U, int numero)
 {
-	//declaraÁ„o de vari·veis;
+	//declara√ß√£o de vari√°veis;
 	TLista aux;
 	
-	//1∫ passo: alocar memÛria para o novo nÛ	
+	//1¬∫ passo: alocar mem√≥ria para o novo n√≥	
 	aux = (TLista) malloc (sizeof(TNo));
 	
-	//verificando se houve erro na alocaÁ„o de memÛria
+	//verificando se houve erro na aloca√ß√£o de mem√≥ria
 	if (aux == NULL)
 	{
 		return FALSE;
 	}
 	else
 	{
-		//2∫ passo: armazenar 'numero' na memÛria recÈm-alocada
+		//2¬∫ passo: armazenar 'numero' na mem√≥ria rec√©m-alocada
 		aux->valor = numero;
 		
-		//3∫ passo: fazer com que o campo 'prox' do novo nÛ aponte para NULL
+		//3¬∫ passo: fazer com que o campo 'prox' do novo n√≥ aponte para NULL
 		aux->prox = NULL;
 		
 		if (*U)
 		{
-			//4∫ passo: fazer o "antigo ˙ltimo nÛ" apontar para o novo nÛ
+			//4¬∫ passo: fazer o "antigo √∫ltimo n√≥" apontar para o novo n√≥
 			(*U)->prox = aux;
 		}
 		else
 		{
-			//Fazer o 'F' apontar para o novo nÛ (que È o primeiro da fila)
+			//Fazer o 'F' apontar para o novo n√≥ (que √© o primeiro da fila)
 			*F = aux;
 		}
 	
-		//5∫ passo: fazer o 'U' apontar para o novo nÛ
+		//5¬∫ passo: fazer o 'U' apontar para o novo n√≥
 		*U = aux;
 		
 		return TRUE;
@@ -139,17 +139,17 @@ int enfilar (TLista *F, TLista *U, int numero)
 
 int desenfilar (TLista *F, TLista *U, int *numero)
 {
-	//declaraÁ„o de vari·veis
+	//declara√ß√£o de vari√°veis
 	TLista aux;
 	
-	//verificando se a fila est· vazia
+	//verificando se a fila est√° vazia
 	if (!(*F))
 	{
 		return FALSE;
 	}
 	else
 	{
-		//verificando se a lista possui apenas um nÛ
+		//verificando se a lista possui apenas um n√≥
 		if (*F == *U)
 		{
 			*U = NULL;
@@ -158,7 +158,7 @@ int desenfilar (TLista *F, TLista *U, int *numero)
 		//fazer o 'aux' apontar para o primeiro elemento da fila
 		aux = *F;
 		
-		//atualizando o F, uma vez que o primeiro ser· removido	
+		//atualizando o F, uma vez que o primeiro ser√° removido	
 		*F = aux->prox;   //ou   *F = (*F)->prox
 		
 		/*
@@ -171,7 +171,7 @@ int desenfilar (TLista *F, TLista *U, int *numero)
 		//armazenando em 'numero' o valor sendo removido
 		*numero = aux->valor;
 		
-		//liberando o nÛ sendo removido
+		//liberando o n√≥ sendo removido
 		free (aux);
 		
 		return TRUE;
@@ -180,7 +180,7 @@ int desenfilar (TLista *F, TLista *U, int *numero)
 
 int primeiro (TLista F, int *p)
 {
-	//verificando se a fila est· vazia
+	//verificando se a fila est√° vazia
 	//if (F == NULL)
 	if (!F)
 	{
@@ -197,20 +197,20 @@ int primeiro (TLista F, int *p)
 
 int menu ()
 {
-	//declaraÁ„o de vari·veis
+	//declara√ß√£o de vari√°veis
 	int opcao;
 	
-	//exibindo o meu ao usu·rio
+	//exibindo o meu ao usu√°rio
 	printf ("Menu de Operacoes:\n\n");
 	printf ("(1) Enfilar\n");
 	printf ("(2) Desenfilar\n");
 	printf ("(3) Primeiro\n");
 	printf ("(4) Sair\n\n");
 	
-	//lendo a opÁ„o do usu·rio
+	//lendo a op√ß√£o do usu√°rio
 	printf ("Entre com a sua opcao: ");
 	scanf ("%d", &opcao);
 	
-	//retornando a opÁ„o escolhida
+	//retornando a op√ß√£o escolhida
 	return opcao;
 }
