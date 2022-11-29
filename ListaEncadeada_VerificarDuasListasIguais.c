@@ -1,34 +1,34 @@
-/* Implementar uma função que, dadas duas listas dinâmicas do tipo TLista, verifique se estas são iguais; 
-isto é, contêm os mesmos elementos, na mesma ordem.
+/* Implementar uma funÃ§Ã£o que, dadas duas listas dinÃ¢micas do tipo TLista, verifique se estas sÃ£o iguais; 
+isto Ã©, contÃªm os mesmos elementos, na mesma ordem.
 
 Lucas Miguel de Sena Costa */
 
-//importação de bibliotecas
+//importaÃ§Ã£o de bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
 
-//definição de constantes
+//definiÃ§Ã£o de constantes
 #define TAM 7
 #define TRUE 1
 #define FALSE 0
 
-//Declaração de tipos
-//Criamos um nome provisório 'No' para o struct 'TNo', para que possamos manipular o struct.
+//DeclaraÃ§Ã£o de tipos
+//Criamos um nome provisÃ³rio 'No' para o struct 'TNo', para que possamos manipular o struct.
 typedef struct No{
-	int valor; //Vale lembrar que é 'int' porque se trata de uma lista de inteiros. Pode ser float, string, struct...
+	int valor; //Vale lembrar que Ã© 'int' porque se trata de uma lista de inteiros. Pode ser float, string, struct...
 	struct No* prox; //? um ponteiro para um struct, neste caso para um igual ao criado.
 }TNo;
 
-typedef TNo* TLista; //TLista é um ponteiro para TNo
+typedef TNo* TLista; //TLista Ã© um ponteiro para TNo
 
-//protótipos/cabeçalhos das funções
+//protÃ³tipos/cabeÃ§alhos das funÃ§Ãµes
 int inserir (TLista *L, int numero);
-void exibir (TLista L); //Não precisamos colocar o ponteiro pois só iremos percorrer a lista
+void exibir (TLista L); //NÃ£o precisamos colocar o ponteiro pois sÃ³ iremos percorrer a lista
 int verificarIguais (TLista L1, TLista L2);
 
 void main ()
 {
-	//Declaração de variáveis
+	//DeclaraÃ§Ã£o de variÃ¡veis
 	TLista l1 = NULL;
 	TLista l2 = NULL;
 	int op, num1, resp;
@@ -37,17 +37,17 @@ void main ()
 	{
 		system ("CLS");		//limpar tela    clrscr();
 		
-		//exibindo o meu ao usuário
+		//exibindo o meu ao usuÃ¡rio
 		op = menu ();
 		
-		//verificando a opção escolhida
+		//verificando a opÃ§Ã£o escolhida
 		switch (op)
 		{
-			//Inserção na lista 1
+			//InserÃ§Ã£o na lista 1
 			case 1: printf ("\nEntre com o valor a ser inserido na lista 1: ");
 			        scanf ("%d", &num1);
 			        
-			        //chamando a função
+			        //chamando a funÃ§Ã£o
 			        if (inserir (&l1, num1) == TRUE)
 			        {
 			        	printf ("\n\tInsercao na lista 1 realizada com sucesso!");
@@ -58,11 +58,11 @@ void main ()
 					}
 					break;
 			
-			//Inserção na lsita 2
+			//InserÃ§Ã£o na lsita 2
 			case 2: printf ("\nEntre com o valor a ser inserido na lista 2: ");
 			        scanf ("%d", &num1);
 			        
-			        //chamando a função
+			        //chamando a funÃ§Ã£o
 			        if (inserir (&l2, num1) == TRUE)
 			        {
 			        	printf ("\n\tInsercao na lista 2 realizada com sucesso!");
@@ -96,7 +96,7 @@ void main ()
 					}
 					break;
 					
-			//Saída
+			//SaÃ­da
 			case 6: printf ("\n\nPrograma finalizado!");
 			        break;
 			        
@@ -110,10 +110,10 @@ void main ()
 
 int menu ()
 {
-	//declaração de variáveis
+	//declaraÃ§Ã£o de variÃ¡veis
 	int opcao;
 	
-	//exibindo o meu ao usuário
+	//exibindo o meu ao usuÃ¡rio
 	printf ("Menu de Operacoes:\n\n");
 	printf ("(1) Inserir na lista 1\n");
 	printf ("(2) Inserir na lista 2\n");
@@ -122,37 +122,37 @@ int menu ()
 	printf ("(5) Verificar se as listas sao iguais\n");
 	printf ("(6) Sair\n\n");
 	
-	//lendo a opção do usuário
+	//lendo a opÃ§Ã£o do usuÃ¡rio
 	printf ("Entre com a sua opcao: ");
 	scanf ("%d", &opcao);
 	
-	//retornando a opção escolhida
+	//retornando a opÃ§Ã£o escolhida
 	return opcao;
 }
 
 int inserir (TLista *L, int numero)
 {
-	//declaração de variáveis;
+	//declaraÃ§Ã£o de variÃ¡veis;
 	TLista aux;
 	
-	//1º passo: alocar memória para o novo nó	
+	//1Âº passo: alocar memÃ³ria para o novo nÃ³	
 	aux = (TLista) malloc (sizeof(TNo));
 	
-	//verificando se houve erro na alocação de memória
+	//verificando se houve erro na alocaÃ§Ã£o de memÃ³ria
 	if (aux == NULL)
 	{
 		return FALSE;
 	}
 	else
 	{
-		//2º passo: armazenar 'numero' na memória recém-alocada
+		//2Âº passo: armazenar 'numero' na memÃ³ria recÃ©m-alocada
 		aux->valor = numero;
 		
-		//3º passo: mandar o campo 'prox' do novo nó apontar para o 
-		//"até então" primeiro elemento	da lista
+		//3Âº passo: mandar o campo 'prox' do novo nÃ³ apontar para o 
+		//"atÃ© entÃ£o" primeiro elemento	da lista
 		aux->prox = *L;
 		
-		//4º passo: fazer com que L aponte para o novo nó da lista		
+		//4Âº passo: fazer com que L aponte para o novo nÃ³ da lista		
 		*L = aux;
 		
 		return TRUE;
@@ -161,23 +161,23 @@ int inserir (TLista *L, int numero)
 
 void exibir (TLista L)
 {
-	//declaração de variáveis
+	//declaraÃ§Ã£o de variÃ¡veis
 	TLista aux = L;
 	
-	//testando se a lista está vazia
+	//testando se a lista estÃ¡ vazia
 	if (L == NULL)
 	{
 		printf ("\nLista vazia!");
 	}
 	else
 	{		
-		//percorrendo a lista até o seu final
+		//percorrendo a lista atÃ© o seu final
 		while (aux != NULL)
 		{
 			//exibindo o valor apontado pelo 'aux'
 			printf ("%d ", aux->valor);
 			
-			//atualizando o 'aux' para apontar para o próximo nó
+			//atualizando o 'aux' para apontar para o prÃ³ximo nÃ³
 			aux = aux->prox;
 		}
 	}
@@ -185,9 +185,9 @@ void exibir (TLista L)
 
 int verificarIguais (TLista L1, TLista L2)
 {
-	//Declaração de variáveis
-	TLista aux1 = L1; //Aux1 aponta para o primeiro nó da lista 1
-	TLista aux2 = L2; //Aux2 aponta para o primeiro nó da lista 2
+	//DeclaraÃ§Ã£o de variÃ¡veis
+	TLista aux1 = L1; //Aux1 aponta para o primeiro nÃ³ da lista 1
+	TLista aux2 = L2; //Aux2 aponta para o primeiro nÃ³ da lista 2
 	
 	//percorrendo enquanto existirem elementos nas listas
 	while (aux1 && aux2)
@@ -206,7 +206,7 @@ int verificarIguais (TLista L1, TLista L2)
 	//Verificando se as duas listas chegaram ao fim
 	if (!aux1 && !aux2)
 	{
-		return TRUE; //retornando TRUE, uma vez que as listas chegaram ao final juntas com os mesmos elementos nas mesmas posições
+		return TRUE; //retornando TRUE, uma vez que as listas chegaram ao final juntas com os mesmos elementos nas mesmas posiÃ§Ãµes
 	}
 	else
 	{
